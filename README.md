@@ -1,0 +1,149 @@
+# Planora AI 🌟 — GenAI Event Planning Assistant
+> An intelligent, context-aware GenAI planning assistant that empowers organizers to seamlessly coordinate **Weddings**, **Birthdays**, and **Community Events** with automated dynamic budgets, chronological timelines, vendor checklists, accessibility audits, and personalized creative concepts.
+
+[![Build Status](https://img.shields.io/badge/Build-Passing-emerald?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![Tests](https://img.shields.io/badge/Tests-47%20Passed-indigo?style=flat-square&logo=vitest)](https://vitest.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-ES2022-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-slate?style=flat-square)](LICENSE)
+[![Branch](https://img.shields.io/badge/Branch-main-green?style=flat-square&logo=git)](https://github.com/)
+[![Repo Size](https://img.shields.io/badge/Size-%3C2MB-success?style=flat-square)]()
+
+---
+
+## 1. Chosen Vertical & Persona
+- **Chosen Challenge Vertical**: **Event Planning Assistant** (Weddings, Birthdays, and Community Events).
+- **AI Persona**: **Planora** — An empathetic, proactive, and elite AI Event Director with deep expertise across hospitality, municipal logistics, vendor contract negotiations, and creative aesthetic design.
+
+### Why This Vertical Matters
+Event organizing can involve budget pressure, fragmented checklists, and overlooked accessibility needs. **Planora AI** acts as a co-planner that translates user goals into actionable budgets, timelines, and checklists.
+
+---
+
+## 2. Approach & Architecture Logic
+
+```mermaid
+flowchart TD
+    A["User Inputs Vision & Context<br/>(Type, Headcount, Budget, Vibe, Date)"] --> B["Input Validation & Sanitization Engine"]
+    B --> C{"AI Provider Resolution"}
+    C -->|"Live Key Available"| D["Gemini 2.0 Flash REST API<br/>(Structured JSON Extraction)"]
+    C -->|"Zero-Key / Offline"| E["Planora Heuristic AI Engine<br/>(Rule-based contextual synthesizer)"]
+    D --> F["Unified Event Plan State"]
+    E --> F
+    F --> G["Interactive Budget Tracker & CSV"]
+    F --> H["Chronological Milestones & Day-Of Run-of-Show"]
+    F --> I["Vendor Negotiation Matrix & Red Flags"]
+    F --> J["Personalized Ideas & Hex Moodboards"]
+    F --> K["Accessibility & Inclusion Audit"]
+    F --> L["Context-Aware Interactive Chat Assistant"]
+```
+
+### Contextual Decision Engine
+1. **Vertical-Specific Budget Algorithms**:
+   - **Weddings**: Prioritizes venue/rentals (22%), catering (28%), bar (8%), photography/video (10%), attire (6%), floral/decor (8%), contingency buffer (9%).
+   - **Birthdays**: Maximizes interactive guest experiences, focal balloon/neon installations (12%), specialty bakeries/custom cakes (7%), DJ/entertainment (10%), food spreads (32%).
+   - **Community Events**: Focuses heavily on city/park permits & liability insurance (18%), ADA sanitation & waste management (14%), safety/first-aid (10%), staging/audio (16%), and volunteer hydration.
+
+2. **Feasibility Diagnostics**:
+   - Calculates real-time cost-per-guest (`Budget / GuestCount`).
+   - If a wedding plan is under \$50/guest or a community event is under \$10/attendee, Planora triggers intelligent advisory warnings with tailored cost-cutting strategies (e.g. buffet vs. plated, digital RSVPs, BYOB venues, municipal sponsorship).
+
+3. **Dual-Core AI Architecture (Live Gemini + Offline Heuristic Fallback)**:
+   - **Google Gemini API**: Connects to the stable `gemini-3.8-flash` model for structured event plans and interactive chat.
+   - **Zero-Key Heuristic Fallback**: Generates a local plan when no API key is configured. Live Gemini responses require an API key and network access.
+
+---
+
+## 3. Key Features & How The Solution Works
+
+| Module | Core Capability | User Value |
+|---|---|---|
+| 🎯 **Dashboard Overview** | Real-time countdown timer, budget variance gauge, task completion ring, and feasibility diagnostics. | High-level situational awareness at a glance. |
+| 💰 **Budget & Expense Tracker** | Dynamic category breakdowns, estimated vs. actual expenses, payment status toggling (`Planned`, `Deposit Paid`, `Paid In Full`), CSV export. | Eliminates hidden fees and prevents budget overruns. |
+| ⏱️ **Chronological Milestones & Run-of-Show** | Grouped by 5 chronological phases: *Early Planning*, *Vendor Booking*, *Details/RSVPs*, *Final Countdown (1-2 Weeks)*, and minute-by-minute *Day-Of Run of Show*. Features celebratory confetti upon completion. | Helps organizers track important tasks before and during the event. |
+| 🤝 **Vendor Checklists & Matrix** | Categorized vendor cards with status pipeline, diligence checklists, **tailored interview questions**, and **contract red flags**. | Equips non-professionals to negotiate like seasoned event planners. |
+| 🎨 **Personalized Ideas & Themes** | Curated aesthetic moodboards with **one-click copyable HEX color palettes**, signature food and craft mocktail recipes, interactive icebreaker games, and late-night food stations. | Delivers bespoke event identity without expensive styling agencies. |
+| ♿ **Accessibility & Inclusivity Audit** | Checklist covering step-free physical access, dietary allergy labeling, sensory quiet retreat spaces, large-print signage, and hydration stations with live score. | Ensures events are welcoming and dignified for all attendees. |
+| 💬 **AI Conversational Assistant** | Real-time chat with Planora equipped with full context of your event parameters, suggested action chips, and instant advice. | Dynamic consultation whenever requirements evolve. |
+
+---
+
+## 4. Assumptions Made
+1. **Target User**: Intended for independent organizers, couples, birthday celebrants, or community volunteers who lack formal event planning training and need structured guidance.
+2. **Budget Templates**: Default category percentages are editable planning starting points. Actual prices depend on location, date, guest count, and vendor choices.
+3. **Data Privacy**: Event plans are stored in the browser. If a user enables live Gemini features, the relevant event context and API key are sent directly to Google's API; Planora does not proxy those requests.
+4. **Network Resilience**: Heuristic planning and offline chat work without a Gemini API key after the app is loaded. Live Gemini responses require a network connection and API key.
+
+---
+
+## 5. Security & Responsible Implementation
+- **Input Handling**: User text is length-bounded and sanitized. The interface renders it as React text rather than raw HTML.
+- **API Key Handling**: User-entered keys remain in page memory until reload and are sent directly to Google in the `x-goog-api-key` header. The application does not embed build-time API keys in the public client bundle.
+- **Deployment Headers**: Vercel serves a restrictive Content Security Policy and standard browser security headers, including frame protection and MIME sniffing protection.
+- **Resource Protection**: Bounded request token limits and client-side defensive checks prevent excessive memory consumption or infinite loops.
+- **Content Moderation**: Prompt guidelines ensure safe, respectful, and inclusive event planning dialogue.
+
+---
+
+## 6. Accessibility
+- **Semantic HTML5**: Native `<header>`, `<main>`, `<nav>`, `<section>`, and `<footer>` elements.
+- **Contrast and Motion**: Uses high-contrast text and honors reduced-motion preferences. The project has not undergone an independent WCAG conformance audit.
+- **Keyboard Navigation**: Full focus state management, keyboard-selectable dropdowns, and ARIA roles (`role="tab"`, `aria-selected`, `aria-label`).
+- **Screen Reader Support**: Live-region alerts, semantic labels, and native controls across interactive features.
+
+---
+
+## 7. Testing & Quality Assurance
+The codebase includes an automated test suite powered by **Vitest**:
+- Input validation & edge cases (negative budgets, empty titles, overflow guest counts)
+- XSS tag sanitization tests
+- Budget distribution algorithms across all 3 verticals
+- Budget item sanitization, limits, edits, deletion, payment transitions, and total calculations
+- Chronological timeline ordering & day-of run-of-show verification
+- Vendor questionnaire generation & contract red flags
+- Personalized theme generation & hex code validity
+- Currency formatting & countdown math
+
+To run tests:
+```bash
+npm run check
+```
+
+The `check` script runs the production build and automated test suite. You can run either step by itself with `npm run build` or `npm test`. GitHub Actions runs the combined check for pushes and pull requests.
+
+---
+
+## 8. Getting Started & Setup Guide
+
+### Prerequisites
+- Node.js `v18+` or `v20+`
+- npm `v9+` or `v10+`
+- Git
+
+### Installation
+```bash
+# 1. Clone your public repository
+git clone https://github.com/<YOUR_USERNAME>/<YOUR_REPOSITORY_NAME>.git
+cd <YOUR_REPOSITORY_NAME>
+
+# 2. Install dependencies
+npm install
+
+# 3. (Optional) Enter a Gemini API key in the app
+# The key is held in memory for this page session and is not written to browser storage.
+
+# 4. Launch local development server
+npm run dev
+
+# 5. Execute automated unit tests
+npm test
+
+# 6. Build for production
+npm run build
+```
+
+---
+
+## 9. Repository Compliance & Submission Notes
+- **Repository Size**: Under **2 MB** (well below the 10 MB competition limit).
+- **Git Branch**: Exactly **one branch** (`main`).
+- **License**: MIT.
